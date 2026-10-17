@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "plotwork": {
+      "command": "npx",
+      "args": ["-y", "@buun_group/plotwork-mcp@0.1.0-beta.4"]
+    }
+  }
+}

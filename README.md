@@ -1,7 +1,57 @@
 # Plotwork for Claude Code
 
-The Plotwork plugin for Claude Code. The contents are mirrored from the Plotwork monorepo on each release.
+The Plotwork plugin for Claude Code. It starts the Plotwork MCP server, draws every `.diagram` file and Markdown `diagram` fence to SVG with the command line each time Claude saves one, serves a gallery of the project's pictures on localhost, and adds three skills that tell Claude how to use them together. It is for anyone who uses Claude Code in a repository with documentation.
 
+## TL;DR
+
+| Question | Answer |
+|---|---|
+| How do I install it? | `/plugin install plotwork --marketplace plotwork-official/plotwork-claude-plugin` inside Claude Code. |
+| What does it need? | Node 22 or newer. No account and no key. |
+| Does it use the network? | `npx` downloads the MCP server and the command line from npm the first time. After that, nothing is sent by default. |
+| Where is the guide? | [docs.plotwork.dev/agents/claude-code-plugin](https://docs.plotwork.dev/agents/claude-code-plugin) |
+| Can I change this repository? | It is a copy of the plugin's source, made on each change there. A pull request here is replaced by the next copy, so open an issue instead. |
+
+## Install
+
+Inside Claude Code, add the marketplace and install the plugin from it:
+
+```text
+/plugin marketplace add plotwork-official/plotwork-claude-plugin
+/plugin install plotwork@plotwork
 ```
+
+Or name the marketplace in the install itself:
+
+```text
 /plugin install plotwork --marketplace plotwork-official/plotwork-claude-plugin
 ```
+
+Restart Claude Code when it asks, then run `/mcp` to confirm the `plotwork` server is connected. If you added the server before with `claude mcp add plotwork`, remove that one with `claude mcp remove plotwork` so Claude sees one set of tools.
+
+## Contents
+
+| Path | Purpose |
+|---|---|
+| `.claude-plugin/plugin.json` | The plugin's name, version and description. |
+| `.claude-plugin/marketplace.json` | A marketplace of one plugin, so `/plugin marketplace add` works on this repository. |
+| `.mcp.json` | Starts the local MCP server with `npx` of a pinned release. |
+| `hooks/hooks.json` | Runs `scripts/hook.mjs` at the start of a session and after each Write, Edit and MultiEdit. |
+| `scripts/` | The hook, how the command line is found, and the wrapper the skills run. Plain Node with no dependencies. |
+| `skills/` | `draw`, `document` and `preview`, also runnable as `/plotwork:draw`, `/plotwork:document` and `/plotwork:preview`. |
+
+## Settings
+
+| Variable | Effect |
+|---|---|
+| `PLOTWORK_HOOKS=off` | Turns the hook off. The skills then run the command line themselves. |
+| `PLOTWORK_CLI` | The command the hook runs instead of the default, such as `yarn plotwork`. |
+
+## See also
+
+| Link | Why |
+|---|---|
+| [The Claude Code plugin guide](https://docs.plotwork.dev/agents/claude-code-plugin) | What the plugin does, step by step |
+| [Plotwork documentation](https://docs.plotwork.dev) | The diagram language, the MCP tools and the command line |
+| `SECURITY.md` | How to report a vulnerability |
+| `LICENSE` | MIT |

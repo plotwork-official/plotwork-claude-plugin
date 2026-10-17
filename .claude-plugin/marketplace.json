@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "plotwork",
+  "owner": {
+    "name": "Plotwork",
+    "url": "https://plotwork.dev"
+  },
+  "metadata": {
+    "description": "The Plotwork plugin for Claude Code.",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "plotwork",
+      "source": "./",
+      "description": "Write diagrams with the Plotwork MCP server; a hook draws them to SVG with the command line on save and puts them in your docs."
+    }
+  ]
+}
