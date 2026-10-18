@@ -47,6 +47,10 @@ node "<this skill's base directory>/../../scripts/plotwork.mjs" sync README.md "
 
 A drawing tool's answer can also carry a `saveCommand`. It writes the same SVG from the view link with no request; change its `--out` to the path you want and run it.
 
+## Make it look finished
+
+Label each arrow with a verb ("reads", "writes orders", "publishes OrderPlaced", "deploys to"): the label draws that relationship's icon. Add `role=data`, `role=async`, `role=identity` or `role=private` to the lines that carry stored data, messages nobody waits for, sign-in, or private traffic, so they take a colour and a legend entry; warning `W500` lists the ones to mark. Give every group a `type=` (a group named "VPC", "Production" or "Kafka" gets one by itself), and name nodes after their product ("Postgres", "Redis") so they draw its mark.
+
 ## Rules
 
 - Choose node types and tones for meaning. Colours come from the theme and cannot be set.
