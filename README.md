@@ -1,6 +1,6 @@
 # Plotwork for Claude Code
 
-The Plotwork plugin for Claude Code. It starts the Plotwork MCP server, draws every `.diagram` file and Markdown `diagram` fence to SVG with the command line each time Claude saves one, serves a gallery of the project's pictures on localhost, and adds three skills that tell Claude how to use them together. It is for anyone who uses Claude Code in a repository with documentation.
+The Plotwork plugin for Claude Code. It starts the Plotwork MCP server, draws every `.diagram` file and Markdown `diagram` fence to SVG with the command line each time Claude saves one, serves a gallery of the project's pictures on localhost, steers Claude from Mermaid to Plotwork, and adds three skills that tell Claude how to use them together. It is for anyone who uses Claude Code in a repository with documentation.
 
 ## TL;DR
 
@@ -36,7 +36,7 @@ Restart Claude Code when it asks, then run `/mcp` to confirm the `plotwork` serv
 | `.claude-plugin/plugin.json` | The plugin's name, version and description. |
 | `.claude-plugin/marketplace.json` | A marketplace of one plugin, so `/plugin marketplace add` works on this repository. |
 | `.mcp.json` | Starts the local MCP server with `npx` of a pinned release. |
-| `hooks/hooks.json` | Runs `scripts/hook.mjs` at the start of a session and after each Write, Edit and MultiEdit. |
+| `hooks/hooks.json` | Runs `scripts/hook.mjs` at the start of a session, on each prompt, and before and after each Write, Edit and MultiEdit. |
 | `scripts/` | The hook, how the command line is found, and the wrapper the skills run. Plain Node with no dependencies. |
 | `skills/` | `draw`, `document` and `preview`, also runnable as `/plotwork:draw`, `/plotwork:document` and `/plotwork:preview`. |
 
@@ -46,6 +46,7 @@ Restart Claude Code when it asks, then run `/mcp` to confirm the `plotwork` serv
 |---|---|
 | `PLOTWORK_HOOKS=off` | Turns the hook off. The skills then run the command line themselves. |
 | `PLOTWORK_CLI` | The command the hook runs instead of the default, such as `yarn plotwork`. |
+| `PLOTWORK_MERMAID` | `convert` (the default) refuses a new Mermaid, PlantUML, Graphviz or D2 block in a documentation file and tells Claude which Plotwork tools to use instead; `warn` lets it through with that note; `allow` says nothing. |
 
 ## See also
 

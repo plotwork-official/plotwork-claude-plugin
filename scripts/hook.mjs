@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 /**
- * The plugin's one hook. Claude Code runs it at the start of a session and after every Write, Edit and MultiEdit, with the event
- * as JSON on standard input.
+ * The plugin's one hook. Claude Code runs it at the start of a session, on each prompt, and before and after every Write, Edit
+ * and MultiEdit, with the event as JSON on standard input.
  *
  * - SessionStart: tells the agent what the hook does and whether the project has a settings file to pass to the tools.
+ * - UserPromptSubmit on a prompt that asks for a diagram: two sentences that point at the Plotwork tools (`guard.mjs`).
+ * - PreToolUse on a documentation file that gains a Mermaid, PlantUML, Graphviz or D2 block: refuses the write, and says what to
+ *   do instead (`guard.mjs`). `PLOTWORK_MERMAID=warn` lets it through with the same note; `allow` says nothing.
  * - PostToolUse on a `.diagram` file: draws the SVG beside it with the command line.
  * - PostToolUse on a Markdown file with a `diagram` fence: runs `sync`, which draws the light and dark SVGs into
  *   `assets/diagrams` beside the page and writes the picture block under the fence.
@@ -22,6 +25,7 @@ import { extname, isAbsolute, join, relative, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 import { CLI_RELEASE, resolveCli, runCli } from './cli.mjs'
+import { addedBlocks, asksForDiagram, guardAnswer, isDocFile, mermaidMode, promptNote, sessionGuidance } from './guard.mjs'
 
 /** The settings files the command line and the tools read, in the order they look for them. */
 export const SETTINGS_FILES = ['plotwork.config.json', join('.plotwork', 'config.json')]
@@ -113,15 +117,16 @@ export function sessionNote(projectDir, { env = process.env, exists = existsSync
     'The Plotwork plugin is on. After you write or edit a `.diagram` file, its SVG is drawn beside it; after you write or edit a Markdown file with a ```diagram fence, its pictures are synced into assets/diagrams and the picture block is written under the fence.',
     `Mistakes come back as a blocked result with line, column and hint: fix them and save again. The command line is ${runs}.`,
     settings ? `This project has ${settings}: read it and pass it as \`settings\` to every Plotwork tool that takes settings.` : undefined,
+    sessionGuidance(mermaidMode(env)),
     'Use the plotwork:draw, plotwork:document and plotwork:preview skills for the full workflow.',
   ]
     .filter(Boolean)
     .join(' ')
 }
 
-/** The file a Write, Edit or MultiEdit touched, relative to the project, or undefined when it is outside the project. */
+/** The file a Write, Edit, MultiEdit or NotebookEdit touched, relative to the project, or undefined when it is outside the project. */
 export function touchedFile(event, projectDir) {
-  const filePath = event?.tool_input?.file_path
+  const filePath = event?.tool_input?.file_path ?? event?.tool_input?.notebook_path
   if (typeof filePath !== 'string' || filePath === '') return undefined
   const absolute = isAbsolute(filePath) ? filePath : resolve(projectDir, filePath)
   const path = relative(projectDir, absolute)
@@ -134,6 +139,14 @@ export function handle(event, { env = process.env, run = runCli } = {}) {
   const projectDir = env.CLAUDE_PROJECT_DIR || event?.cwd || process.cwd()
   if (event?.hook_event_name === 'SessionStart') {
     return { hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: sessionNote(projectDir, { env }) } }
+  }
+  if (event?.hook_event_name === 'UserPromptSubmit') {
+    return asksForDiagram(event.prompt) ? { hookSpecificOutput: { hookEventName: 'UserPromptSubmit', additionalContext: promptNote(mermaidMode(env)) } } : undefined
+  }
+  if (event?.hook_event_name === 'PreToolUse') {
+    const path = touchedFile(event, projectDir)
+    if (path === undefined || !isDocFile(path)) return undefined
+    return guardAnswer(addedBlocks(event, join(projectDir, path)), mermaidMode(env))
   }
   if (event?.hook_event_name !== 'PostToolUse') return undefined
   const path = touchedFile(event, projectDir)

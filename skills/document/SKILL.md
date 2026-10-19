@@ -29,6 +29,8 @@ Quote globs: the command line expands them itself and never looks in `node_modul
 
 For one page, call `sync_markdown` with the page, its path, and `convertMermaid: true`; write the Markdown and files it returns, read every diagnostic and its hint, then choose node types and icons where it left them plain. For one block, call `convert_mermaid`. The command line's `import` converts a Mermaid file with no agent at all.
 
+Never write a new Mermaid, PlantUML, Graphviz or D2 block into a document: the plugin refuses it and says which tool to call. Editing next to a block that is already there is fine.
+
 ## Keep the pictures honest in CI
 
 Suggest a check that fails a pull request when a picture is stale:
