@@ -2,7 +2,7 @@
   "mcpServers": {
     "plotwork": {
       "command": "npx",
-      "args": ["-y", "@buun_group/plotwork-mcp@0.2.0"]
+      "args": ["-y", "@buun_group/plotwork-mcp@0.3.0"]
     }
   }
 }
