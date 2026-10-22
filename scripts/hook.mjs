@@ -15,6 +15,9 @@
  * When the command line cannot run at all (no network for the first `npx` download, a timeout), the agent is told and nothing is
  * blocked. `PLOTWORK_HOOKS=off` turns the hook off.
  *
+ * - Stop, only with `PLOTWORK_LISTEN_STOP=on`: while the project listens to a board (`plotwork:listen`), blocks the stop once and asks
+ *   for one more `wait_for_board_messages`, so a message that came in while the agent worked is answered (`skills/listen/listen.mjs`).
+ *
  * `PLOTWORK_PUBLISH=library` (off by default) also saves the file's diagrams to an organisation's private library after a drawing that
  * worked, with `plotwork publish --org`, the key in `PLOTWORK_API_KEY`, and the organisation in `PLOTWORK_ORG` or the settings file's
  * `brand.organization`. It always names the organisation, so a diagram can never land at a public link by this route. The link, or why
@@ -26,6 +29,7 @@ import { fileURLToPath } from 'node:url'
 
 import { CLI_RELEASE, resolveCli, runCli } from './cli.mjs'
 import { addedBlocks, asksForDiagram, guardAnswer, isDocFile, mermaidMode, promptNote, sessionGuidance } from './guard.mjs'
+import { stopAnswer } from '../skills/listen/listen.mjs'
 
 /** The settings files the command line and the tools read, in the order they look for them. */
 export const SETTINGS_FILES = ['plotwork.config.json', join('.plotwork', 'config.json')]
@@ -133,10 +137,17 @@ export function touchedFile(event, projectDir) {
   return path === '' || path.startsWith(`..${sep}`) || path === '..' || isAbsolute(path) ? undefined : path
 }
 
-/** Runs one event and returns the JSON to print, or undefined when the hook has nothing to say. */
-export function handle(event, { env = process.env, run = runCli } = {}) {
+/**
+ * Runs one event and returns the JSON to print, or undefined when the hook has nothing to say. `listenDir` is where the listen skill's
+ * state is kept, for tests.
+ * @param {any} event
+ * @param {{ env?: Record<string, string | undefined>, run?: typeof runCli, listenDir?: string }} [options]
+ * @returns {any}
+ */
+export function handle(event, { env = process.env, run = runCli, listenDir } = {}) {
   if (env.PLOTWORK_HOOKS === 'off') return undefined
   const projectDir = env.CLAUDE_PROJECT_DIR || event?.cwd || process.cwd()
+  if (event?.hook_event_name === 'Stop') return stopAnswer(event, projectDir, listenDir === undefined ? { env } : { env, dir: listenDir })
   if (event?.hook_event_name === 'SessionStart') {
     return { hookSpecificOutput: { hookEventName: 'SessionStart', additionalContext: sessionNote(projectDir, { env }) } }
   }

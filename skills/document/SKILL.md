@@ -5,7 +5,7 @@ description: Illustrate documentation with Plotwork diagrams, keep their picture
 
 # Illustrate documentation
 
-Pictures in docs live as ```` ```diagram ```` fences in the Markdown. The command line's `sync` draws each fence to an SVG in `assets/diagrams/` beside the page and writes a picture block under the fence, so the diagram shows on GitHub, GitLab and any Markdown site. It is one SVG that follows the reader's light or dark setting, or a light and a dark SVG with `"defaults": { "schemes": "light-and-dark" }` in `plotwork.config.json`. The plugin's hook runs `sync` every time you save a page that has a fence.
+Pictures in docs live as ```` ```diagram ```` fences in the Markdown. The command line's `sync` draws each fence to an SVG in `assets/diagrams/` beside the page and writes a picture block under the fence, so the diagram shows on GitHub, GitLab and any Markdown site. It is one SVG that follows the reader's light or dark setting, or a light and a dark SVG with `"defaults": { "scheme": "light-and-dark" }` in `plotwork.config.json`. The plugin's hook runs `sync` every time you save a page that has a fence.
 
 ## Add diagrams to a document
 

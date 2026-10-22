@@ -24,7 +24,7 @@ The MCP tools write and check the source. The command line draws the pictures on
 
    | Where it is shown | What to write | What the hook does |
    |---|---|---|
-   | Inside a Markdown page (README, docs page, ADR) | A ```` ```diagram ```` fence with the source, in the page | Runs `sync`: draws the SVG into `assets/diagrams/` beside the page (one that follows the reader's setting, or a light and a dark one with `"schemes": "light-and-dark"`) and writes the picture block under the fence |
+   | Inside a Markdown page (README, docs page, ADR) | A ```` ```diagram ```` fence with the source, in the page | Runs `sync`: draws the SVG into `assets/diagrams/` beside the page (one that follows the reader's setting, or a light and a dark one with `"scheme": "light-and-dark"`) and writes the picture block under the fence |
    | A picture on its own, used by a site or several pages | The source in `<docs folder>/diagrams/<name>.diagram` | Runs `render`: writes `<name>.svg` beside it, with the source inside |
 
    Use the folder the repository already keeps its docs and images in (look for `docs/`, an existing `assets/diagrams/`, or the docs app's content folder). Name files after what they show, in kebab case.
@@ -53,6 +53,6 @@ Label each arrow with a verb ("reads", "writes orders", "publishes OrderPlaced",
 
 ## Rules
 
-- Choose node types and tones for meaning. Colours come from the theme and cannot be set.
+- Choose node types and tones for meaning. Colours come from the colour theme, `theme=<name>` on the header (plotwork, slate, ocean, forest, sunset, mono, contrast), and cannot be set one by one.
 - Never invent an icon. Use `map_icons` or `search_icons` and pick from the candidates.
 - Publish a hosted link (`publish_diagram`) only when the person asks for one: anyone with the link can see it.
