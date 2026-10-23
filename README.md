@@ -1,3 +1,12 @@
+<p align="center">
+  <a href="https://plotwork.dev">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://plotwork.dev/brand/logo/plotwork-lockup-on-dark.svg">
+      <img alt="Plotwork" src="https://plotwork.dev/brand/logo/plotwork-lockup-on-light.svg" width="260">
+    </picture>
+  </a>
+</p>
+
 # Plotwork for Claude Code
 
 The Plotwork plugin for Claude Code. It starts the Plotwork MCP server, draws every `.diagram` file and Markdown `diagram` fence to SVG with the command line each time Claude saves one, serves a gallery of the project's pictures on localhost, steers Claude from Mermaid to Plotwork, and adds skills that tell Claude how to use them together and listen to a Plotwork live whiteboard. It is for anyone who uses Claude Code in a repository with documentation.
