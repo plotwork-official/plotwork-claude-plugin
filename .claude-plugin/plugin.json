@@ -10,5 +10,26 @@
   },
   "homepage": "https://docs.plotwork.dev/agents/claude-code-plugin",
   "license": "MIT",
-  "keywords": ["diagrams", "svg", "mcp", "markdown", "documentation", "architecture"]
+  "keywords": [
+    "diagrams",
+    "svg",
+    "mcp",
+    "markdown",
+    "documentation",
+    "architecture",
+    "whiteboards"
+  ],
+  "mcpServers": {
+    "plotwork-board": {
+      "command": "node",
+      "args": [
+        "${CLAUDE_PLUGIN_ROOT}/scripts/channel.mjs"
+      ]
+    }
+  },
+  "channels": [
+    {
+      "server": "plotwork-board"
+    }
+  ]
 }
