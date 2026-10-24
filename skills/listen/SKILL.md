@@ -34,6 +34,7 @@ The board tools are on the hosted Plotwork server connected to the person's orga
    - Read the tab with `read_board_tab` and your `revision`, change it with `edit_board_tab` and that `revision`, and check it parses.
    - `problems` lists the engine's warnings and errors the person sent: fix them at their lines.
    - Then `reply_board_message` with `inReplyTo` the message id and, in one or two sentences, what you changed. Ask a question the same way when the message is unclear.
+   - Add `usage` to the reply only with figures this session has shown you for the work on that message (input and output tokens, cache reads and writes, the model id, the cost in US dollars), such as a cost or token line Claude Code printed. Leave out any figure you were not shown, and leave `usage` out entirely when you were shown none. Never estimate, count or round your own: the person sees the figures beside your reply as what it cost.
    - Ask in a reply before you call `request_merge`, and call it only when the person says yes. A person merges.
 6. **Keep listening.** With the channel, just wait for the next event; the stream ends with its ticket after 12 hours, so open a new one if you should listen on. With the wait, go back to step 4 and stop after 20 empty waits in a row (about eight minutes): say you stopped listening and how to start again.
 7. **Stop.** When the person says stop, after the idle rounds, or when the board is closed, call `stop_listening` if you used the channel, then run:
