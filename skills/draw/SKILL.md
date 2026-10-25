@@ -49,7 +49,7 @@ A drawing tool's answer can also carry a `saveCommand`. It writes the same SVG f
 
 ## Make it look finished
 
-Label each arrow with a verb ("reads", "writes orders", "publishes OrderPlaced", "deploys to"): the label draws that relationship's icon. Add `role=data`, `role=async`, `role=identity` or `role=private` to the lines that carry stored data, messages nobody waits for, sign-in, or private traffic, so they take a colour and a legend entry; warning `W500` lists the ones to mark. Give every group a `type=` (a group named "VPC", "Production" or "Kafka" gets one by itself), and name nodes after their product ("Postgres", "Redis") so they draw its mark.
+Label each arrow with a verb ("reads", "writes orders", "publishes OrderPlaced", "replicates", "pushes image", "deploys to"): the label draws that relationship's icon, and an arrow into or out of a queue labelled with a message name draws send or receive. Add `role=data`, `role=async`, `role=identity` or `role=private` to the lines that carry stored data, messages nobody waits for, sign-in, or private traffic, so they take a colour and a legend entry; warning `W500` lists the ones to mark. Give every group a `type=` (a group named "VPC", "Production" or "Kafka" gets one by itself), and name nodes after their product ("Postgres", "Redis") so they draw its mark, or after the common part they are ("Load balancer", "Circuit breaker", "Read replica", "Customers") so they draw its icon, with no icon= to write. `get_diagram_syntax` with topic `icon-words` lists every word that draws an icon.
 
 ## Rules
 
