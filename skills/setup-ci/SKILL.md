@@ -28,6 +28,7 @@ The plugin's MCP tools help along the way: `import_source` shows what a file dra
 
    permissions:
      contents: read
+     pull-requests: write
 
    jobs:
      drift:
