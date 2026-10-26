@@ -37,7 +37,7 @@ The plugin's MCP tools help along the way: `import_source` shows what a file dra
          - uses: actions/checkout@v7
            with:
              persist-credentials: false
-         - uses: plotwork-official/plotwork-action@35c08022ae999fc36bc881aad0becab4ae1034e0 # v1.2.0
+         - uses: plotwork-official/plotwork-action@877be568308545bc11529b6b4e607374d051f4e4 # v1.3.0
            with:
              command: generate
              mode: check
