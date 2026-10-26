@@ -54,5 +54,6 @@ Label each arrow with a verb ("reads", "writes orders", "publishes OrderPlaced",
 ## Rules
 
 - Choose node types and tones for meaning. Colours come from the colour theme, `theme=<name>` on the header (plotwork, slate, ocean, forest, sunset, mono, contrast), and cannot be set one by one.
+- Fit the picture to where it goes: on a flow header `spacing=compact` packs the boxes for a dense page and `spacing=roomy` spreads them for a slide. A repository sets it once with `"defaults": { "spacing": "compact" }` in `plotwork.config.json`. The drawing answer's `quality.hints` name the option to change when the picture is cramped, sparse or tangled; apply them before you show it.
 - Never invent an icon. Use `map_icons` or `search_icons` and pick from the candidates.
-- Publish a hosted link (`publish_diagram`) only when the person asks for one: anyone with the link can see it.
+- Publish a hosted link (`publish_diagram`) only when the person asks for one: anyone with the link can see it. When `import_source` split a file into `parts` and the person asks to publish them, publish every part with `series` set to the answer's `series.id`, the part's `index` (the overview is 1) and the total, so they stay together as tabs of one diagram.
