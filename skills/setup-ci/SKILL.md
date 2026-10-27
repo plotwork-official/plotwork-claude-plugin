@@ -14,8 +14,8 @@ The plugin's MCP tools help along the way: `import_source` shows what a file dra
 ## Steps
 
 1. **Look before you write.** Find the files Plotwork draws from: Terraform, OpenAPI documents, Compose files, Kubernetes manifests, SQL, Prisma or Drizzle schemas, GitHub Actions workflows and CSV data. Skip installed dependencies, build output and any file that holds secrets, such as `.env`. If `plotwork.config.json` or `.plotwork/config.json` already exists, add to it instead of replacing it.
-2. **Name the sources.** Write `plotwork.config.json` at the repository root with `"$schema": "https://docs.plotwork.dev/schemas/plotwork.config.json"`, `"defaults": { "scheme": "auto" }`, and one entry in `sources` for each diagram: `name`, `from` (a path or a glob), `format`, and `out` (`docs/diagrams/<name>.diagram`, or a `diagram` fence of a Markdown page the repository already has, written `docs/architecture.md#<name>`). `npx -y @buun_group/plotwork@0.6.0 import-source --help` lists the formats. Draw one diagram for each stack, service map or schema; three diagrams people read beat a dozen they do not.
-3. **Draw them.** Run `npx -y @buun_group/plotwork@0.6.0 generate`. Fix each problem it prints (a code such as S103 names the line of the settings file), then run `npx -y @buun_group/plotwork@0.6.0 generate --check` until it passes. Read the outline of each diagram with `npx -y @buun_group/plotwork@0.6.0 outline <file>` and check it shows what the files say.
+2. **Name the sources.** Write `plotwork.config.json` at the repository root with `"$schema": "https://docs.plotwork.dev/schemas/plotwork.config.json"`, `"defaults": { "scheme": "auto" }`, and one entry in `sources` for each diagram: `name`, `from` (a path or a glob), `format`, and `out` (`docs/diagrams/<name>.diagram`, or a `diagram` fence of a Markdown page the repository already has, written `docs/architecture.md#<name>`). `npx -y @buun_group/plotwork@0.6.1 import-source --help` lists the formats. Draw one diagram for each stack, service map or schema; three diagrams people read beat a dozen they do not.
+3. **Draw them.** Run `npx -y @buun_group/plotwork@0.6.1 generate`. Fix each problem it prints (a code such as S103 names the line of the settings file), then run `npx -y @buun_group/plotwork@0.6.1 generate --check` until it passes. Read the outline of each diagram with `npx -y @buun_group/plotwork@0.6.1 outline <file>` and check it shows what the files say.
 4. **Add the check.** Write `.github/workflows/diagrams.yml` as below. Keep the `uses:` line exactly as written: it pins the release by its commit.
 
    ```yaml
@@ -37,7 +37,7 @@ The plugin's MCP tools help along the way: `import_source` shows what a file dra
          - uses: actions/checkout@v7
            with:
              persist-credentials: false
-         - uses: plotwork-official/plotwork-action@a66ac576a6daf1b770fc7294386481354e87094e # v1.5.0
+         - uses: plotwork-official/plotwork-action@a4df8eaf155240df63e49d360bc63e50529a3f26 # v1.5.1
            with:
              command: generate
              mode: check
