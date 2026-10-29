@@ -1,6 +1,6 @@
 ---
 name: draw
-description: Draw a Plotwork diagram and save it into the repository as an SVG the docs can show. Use when the person asks for a diagram, chart, architecture picture, flow, sequence, schema, or any other picture of a system, or asks to update an existing Plotwork SVG. Combines the Plotwork MCP tools (write and check the source) with the command line the plugin's hook runs (draw the SVG on disk).
+description: Draw a Plotwork diagram and save it into the repository as an SVG the docs can show. Use when the person asks for a diagram, chart, architecture picture, flow, sequence, schema, or any other picture of a system, or asks to update an existing Plotwork SVG or to show one in their own site or React app. Combines the Plotwork MCP tools (write and check the source) with the command line the plugin's hook runs (draw the SVG on disk).
 ---
 
 # Draw a diagram into the repository
@@ -29,8 +29,22 @@ The MCP tools write and check the source. The command line draws the pictures on
 
    Use the folder the repository already keeps its docs and images in (look for `docs/`, an existing `assets/diagrams/`, or the docs app's content folder). Name files after what they show, in kebab case.
 5. **Read the hook's answer.** A blocked result lists each mistake with line, column and hint: fix them and save again. A success names the files written. After a `sync`, read the page again before your next edit, and never edit the lines between `diagram:start` and `diagram:end`.
-6. **Link it.** For a `.diagram` file, reference the SVG from the pages that need it: `![What it shows](./diagrams/<name>.svg)`. A fence needs no link; its picture block is the link.
+6. **Link it.** For a `.diagram` file, reference the SVG from the pages that need it: `![What it shows](./diagrams/<name>.svg)`. A fence needs no link; its picture block is the link. For a web page or a React app, see the next section.
 7. **Offer a look.** Tell the person they can run the `plotwork:preview` skill to see every picture on localhost, reloading as they change.
+
+## Show it in a site or app
+
+When the person wants the diagram in their own web page or React app, call `embed_diagram` instead of writing an `<img>` by hand. The snippet it returns uses the viewer `@plotwork.official/viewer`, so the picture pans, zooms and traces a box's lines, and follows light and dark.
+
+| The person has | Send |
+|---|---|
+| An SVG the site serves (drawn by the hook) | `svg` with the file's text and `path` with where the site serves it; `pin: true` to show only exactly that picture |
+| A stable link `/l/` or an organisation embed link `/o/` | `url`, and `live: true` to show each new version as it is published |
+| A published picture `/d/` | `url` |
+
+Pass `format: "react"` for a React app, and `label` with what the diagram shows, for a screen reader. Paste the `snippet` where the picture goes, run the `install` line it gives, and read its `notes`: each names a choice it left out and why.
+
+Without the tool, the command line writes the same snippet: `node "<this skill's base directory>/../../scripts/plotwork.mjs" embed <file.svg|file.diagram|link> [--format react] [--live] [--pin] [--label "<text>"]`.
 
 ## Changing an existing picture
 

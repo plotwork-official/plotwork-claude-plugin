@@ -46,3 +46,4 @@ On GitHub the Plotwork Action does the same with an annotation on each stale fen
 - Never edit between `diagram:start` and `diagram:end`; the next sync rewrites it.
 - One idea per diagram. Split a picture that needs a paragraph to explain.
 - Commit the SVGs with the page: the picture block points at them.
+- A docs site built from React or HTML pages, not Markdown, shows a picture with `embed_diagram` (see the `plotwork:draw` skill), never a hand-written `<img>`.
